@@ -481,6 +481,7 @@ class SpringApplicationTests {
 
 	@Test
 	void defaultApplicationContextForWeb() {
+		//从这里观察Springboot的服务器
 		SpringApplication application = new SpringApplication(ExampleWebConfig.class);
 		application.setWebApplicationType(WebApplicationType.SERVLET);
 		this.context = application.run();
