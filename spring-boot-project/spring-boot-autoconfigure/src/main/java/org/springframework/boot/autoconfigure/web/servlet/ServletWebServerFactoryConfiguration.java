@@ -66,6 +66,7 @@ class ServletWebServerFactoryConfiguration {
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnClass({ Servlet.class, Tomcat.class, UpgradeProtocol.class })
 	@ConditionalOnMissingBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
+	//由于starter-web默认引入tomcat
 	static class EmbeddedTomcat {
 
 		@Bean
@@ -73,6 +74,7 @@ class ServletWebServerFactoryConfiguration {
 				ObjectProvider<TomcatConnectorCustomizer> connectorCustomizers,
 				ObjectProvider<TomcatContextCustomizer> contextCustomizers,
 				ObjectProvider<TomcatProtocolHandlerCustomizer<?>> protocolHandlerCustomizers) {
+			//实例化了TomcatServletWebServerFactory，在onFefresh中构建服务器
 			TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
 			factory.getTomcatConnectorCustomizers()
 					.addAll(connectorCustomizers.orderedStream().collect(Collectors.toList()));
@@ -91,6 +93,7 @@ class ServletWebServerFactoryConfiguration {
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnClass({ Servlet.class, Server.class, Loader.class, WebAppContext.class })
 	@ConditionalOnMissingBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
+	//需要引入starter-jetty
 	static class EmbeddedJetty {
 
 		@Bean

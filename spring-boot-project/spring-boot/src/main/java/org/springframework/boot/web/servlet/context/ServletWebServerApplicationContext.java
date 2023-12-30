@@ -157,6 +157,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	protected void onRefresh() {
 		super.onRefresh();
 		try {
+			//创建服务器
 			createWebServer();
 		}
 		catch (Throwable ex) {
@@ -179,6 +180,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 			StartupStep createWebServer = this.getApplicationStartup().start("spring.boot.webserver.create");
 			ServletWebServerFactory factory = getWebServerFactory();
 			createWebServer.tag("factory", factory.getClass().toString());
+			//默认是tomcat
 			this.webServer = factory.getWebServer(getSelfInitializer());
 			createWebServer.end();
 			getBeanFactory().registerSingleton("webServerGracefulShutdown",
