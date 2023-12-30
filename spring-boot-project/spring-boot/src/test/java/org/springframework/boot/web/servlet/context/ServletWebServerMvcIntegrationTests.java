@@ -67,6 +67,7 @@ class ServletWebServerMvcIntegrationTests {
 
 	@Test
 	void tomcat() throws Exception {
+		//测试servlet
 		this.context = new AnnotationConfigServletWebServerApplicationContext(TomcatConfig.class);
 		doTest(this.context, "/hello");
 	}

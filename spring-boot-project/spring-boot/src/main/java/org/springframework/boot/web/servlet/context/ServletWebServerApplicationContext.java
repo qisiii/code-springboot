@@ -181,6 +181,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 			ServletWebServerFactory factory = getWebServerFactory();
 			createWebServer.tag("factory", factory.getClass().toString());
 			//默认是tomcat
+			//getSelfInitializer里将dispatcher这个bean进行了实例化并添加到了tomcat容器中
 			this.webServer = factory.getWebServer(getSelfInitializer());
 			createWebServer.end();
 			getBeanFactory().registerSingleton("webServerGracefulShutdown",
@@ -233,7 +234,9 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		prepareWebApplicationContext(servletContext);
 		registerApplicationScope(servletContext);
 		WebApplicationContextUtils.registerEnvironmentBeans(getBeanFactory(), servletContext);
+		//在这里实例化的ServletRegistrationBean
 		for (ServletContextInitializer beans : getServletContextInitializerBeans()) {
+			//在这里添加的servlet
 			beans.onStartup(servletContext);
 		}
 	}

@@ -84,6 +84,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 		this.initializerTypes = (initializerTypes.length != 0) ? Arrays.asList(initializerTypes)
 				: Collections.singletonList(ServletContextInitializer.class);
 		addServletContextInitializerBeans(beanFactory);
+		//里面实例化Servlet和Filter
 		addAdaptableBeans(beanFactory);
 		List<ServletContextInitializer> sortedInitializers = this.initializers.values().stream()
 				.flatMap((value) -> value.stream().sorted(AnnotationAwareOrderComparator.INSTANCE))
@@ -172,6 +173,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 
 	private <T, B extends T> void addAsRegistrationBean(ListableBeanFactory beanFactory, Class<T> type,
 			Class<B> beanType, RegistrationBeanAdapter<T> adapter) {
+		//这个方法里实例化了dispatcherServlet bean
 		List<Map.Entry<String, B>> entries = getOrderedBeansOfType(beanFactory, beanType, this.seen);
 		for (Entry<String, B> entry : entries) {
 			String beanName = entry.getKey();
@@ -276,6 +278,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 			if (name.equals(DISPATCHER_SERVLET_NAME)) {
 				url = "/"; // always map the main dispatcherServlet to "/"
 			}
+			//在这里持有了dispatchServlet
 			ServletRegistrationBean<Servlet> bean = new ServletRegistrationBean<>(source, url);
 			bean.setName(name);
 			bean.setMultipartConfig(this.multipartConfig);
